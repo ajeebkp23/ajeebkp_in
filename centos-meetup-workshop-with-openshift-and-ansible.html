@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>CentOS Meetup - Workshop with OpenShift and Ansible</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">Cosgun Vistas </a></h1>
+                <nav><ul>
+                    <li><a href="/category/coding.html">Coding</a></li>
+                    <li class="active"><a href="/category/meetup.html">Meetup</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/centos-meetup-workshop-with-openshift-and-ansible.html" rel="bookmark"
+           title="Permalink to CentOS Meetup - Workshop with OpenShift and Ansible">CentOS Meetup - Workshop with OpenShift and Ansible</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2018-10-21T11:14:00+02:00">
+                Published: Sun 21 October 2018
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/ajeebkp.html">Ajeeb.K.P</a>
+        </address>
+<p>In <a href="/category/meetup.html">Meetup</a>.</p>
+
+</footer><!-- /.post-info -->      <p>I have been attending a lot of meetups. I don't find enough time to make a simple note on the experience, so as to come back and pick
+those information later. Here is an attempt to do the same. The meetup was conducted by CentOS India <a href="https://www.meetup.com/CentOS-India/">Meetup.com</a> group.</p>
+<p>The meetup was organized at Kerala Startup Mission, Kinfa, Near Medical College, HMT, Kalamassery. It was consisting of two workshops related to  OpenShift and Ansible. The experience of the Meetup was awesome. I really enjoyed most out of it.</p>
+<h2>Pre-requisites installation</h2>
+<p>I downloaded centos minimal iso from here <a href="https://www.centos.org/download/">https://www.centos.org/download/</a>.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Downloaded latest minimal iso from centos website (From Debian 9 Host)</span>
+sudo apt install aria2
+aria2c -x2 http://centos.mirror.snu.edu.in/centos/7.5.1804/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso http://centos.mirror.snu.edu.in/centos/
+<span class="m">7</span>.5.1804/isos/x86_64/CentOS-7-x86_64-Minimal-1804.iso
+</pre></div>
+
+
+<p>Later I installed it in VirtualBox.</p>
+<p>First issue I faced was something related to internet. By default, CentOS Guest was not connecting to internet.</p>
+<div class="highlight"><pre><span></span><span class="c1"># this command was ended in error</span>
+<span class="c1"># sudo yum update</span>
+<span class="c1"># So I had to do this after every boot of the Guest VM</span>
+sudo dhclient
+
+<span class="c1"># re run previous failed command</span>
+sudo yum update
+</pre></div>
+
+
+<p>Following command was really useful.</p>
+<div class="highlight"><pre><span></span>yum search podman
+</pre></div>
+
+
+<p>Then I had to add epel repository (Now, I'm not sure, it's needed or not :-p )</p>
+<div class="highlight"><pre><span></span>sudo yum --enablerepo<span class="o">=</span>extras install epel-release
+</pre></div>
+
+
+<h2>Installing packages</h2>
+<div class="highlight"><pre><span></span>sudo yum install ansible podman buildah skopeo
+</pre></div>
+
+
+<p>Here is a really useful link I found <a href="https://www.server-world.info/en/note?os=CentOS_7&amp;p=podman&amp;f=1">https://www.server-world.info/en/note?os=CentOS_7&amp;p=podman&amp;f=1</a>.</p>
+<p>As you have noticed, I have skipped installing docker in the GuestVM. Instead, I installed docker in my Debian 9 Host. Here is a short description of the same.</p>
+<div class="highlight"><pre><span></span>sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates wget software-properties-common
+wget https://download.docker.com/linux/debian/gpg 
+sudo apt-key add gpg
+<span class="nb">echo</span> <span class="s2">&quot;deb [arch=amd64] https://download.docker.com/linux/debian </span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> stable&quot;</span> <span class="p">|</span> sudo tee -a /etc/apt/sources.list.d/docker.list
+sudo apt-get update
+sudo apt-get -y install docker-ce
+sudo systemctl start docker
+</pre></div>
+
+
+<p>Here is the link I followed, <a href="https://www.itzgeek.com/how-tos/linux/debian/how-to-install-docker-on-debian-9.html">https://www.itzgeek.com/how-tos/linux/debian/how-to-install-docker-on-debian-9.html</a> [Note:- It's always better to read about commands your running before copy-paste].</p>
+<p>Later I learned that, I didn't wanted to install both docker and podman together.</p>
+<h2>Meetup Resources</h2>
+<p><a href="https://learn.openshift.com/playgrounds/openshift39/">https://learn.openshift.com/playgrounds/openshift39/</a> </p>
+<p><a href="https://learn.openshift.com/subsystems/container-internals-lab-1/">https://learn.openshift.com/subsystems/container-internals-lab-1/</a> </p>
+<p><a href="https://docs.google.com/document/d/1FeQ55sVEhechOqwIHPyivsOUyajtYR8ECMT-qh7b-90/edit">https://docs.google.com/document/d/1FeQ55sVEhechOqwIHPyivsOUyajtYR8ECMT-qh7b-90/edit</a></p>
+<p><a href="https://docs.google.com/document/d/1x06QEfe1b9SRofRr1cVNg7MDtffBuhTx2WXmxO5FLzk/edit?usp=sharing">https://docs.google.com/document/d/1x06QEfe1b9SRofRr1cVNg7MDtffBuhTx2WXmxO5FLzk/edit?usp=sharing</a></p>
+<p><a href="https://github.com/ranjithrajaram/httpd-ex">https://github.com/ranjithrajaram/httpd-ex</a></p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
